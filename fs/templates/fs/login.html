@@ -1,0 +1,32 @@
+{% load static %}
+
+{% block body %}
+
+    <section class="container mt-2 p-5  ">
+        <form class="carta" action="{% url 'login' %}" method="post">
+            <div class="background">
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+            <h3>Bienvenido</h3>
+            {% if message %}
+            <div class="text-dark" style="text-align: center; font-weight: bold; margin-top: 10px;">
+                {{ message }}
+            </div>
+            {% endif %}
+            {% csrf_token %}   
+            <div class="form-group">
+
+                <label class = 'titulos' for="username">Usuario</label>
+                <input autofocus class="form-control username" type="username" name="username"  placeholder="Usuario">
+            </div>
+
+            <label class = 'titulos' for="password">Contraseña</label>
+            <div class="form-group">
+                <input class="form-control password" type="password" name="password" placeholder="Contraseña">
+            </div>
+            <button class="Login1" type="submit" value="Login">Ingresar</button>
+        </form>
+    </section>
+    <link rel="stylesheet" href="{% static 'fs/styles.css' %}">
+{% endblock %}

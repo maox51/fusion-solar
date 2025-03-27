@@ -1,0 +1,333 @@
+{% extends "fs/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <section class="hidden" id= "Recientes">
+
+    </section>
+
+    <section class="hidden" id="tabla">
+        <section class ="section-title">Tabla de Productos</section>
+            <div class="container m-1">
+                <div>
+                    <table id="inventariop" class="display nowrap table table-dark table-striped table-hover" style="width:100%">
+                        <caption>
+                            Tabla de Inventario de Productos
+                        </caption>
+                        <thead>
+                            <tr>
+                            <th>Opciones</th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Proveedor</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Precio Unitario</th>
+                            <th>Ganacia</th>
+                            <th>I.V.A</th>
+                            <th>Bodega</th>
+                            <th>Cantidad</th>
+                            <th>Descripcion</th>
+                            <th>Fecha de actualizacion</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider" id="table_products">
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </section>
+
+    <section class="hidden" id="tablav">
+        <section class ="section-title">Reporte de Ventas</section>
+            <div class="container my-2">
+                <div>
+                    <table id="inventariov" class="display nowrap table table-dark table-striped table-hover" style="width:100%">
+                        <caption>
+                            Tabla de registros de Ventas
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>Nventa</th>
+                                <th>Cliente</th>
+                                <th>Vendedor</th>
+                                <th>Pago</th>
+                                <th>Metodo de pago</th>
+                                <th>Carrito de productos</th>
+                                <th>Instalación</th>
+                                <th>Dirección</th>
+                                <th>Fecha de venta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_sells">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </section>
+
+    <section id="Registrar" class="ml-5 hidden">
+        <div class="row p-1">            
+            <div class="col">
+                <form class="p-4 cartag" > 
+                    
+                    <h3 class="text-center pb-4">Registro del Cliente</h3>
+                    <div class="grid-container">
+                        <div class="input-group">
+                            <label class="label">Nombre</label>
+                            <input name="Nombre" id="vnomcliente" class="input" type="text" required>
+                            <div></div>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Apellido</label>
+                            <input name="Apellido" id="vapcliente" class="input" type="text" required>
+                            <div></div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="label">Telefono</label>
+                            <input name="Telefono" id="vtelfcliente" class="input" type="number" required>
+                            <div></div>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Identificación</label>
+                            <input name="Cedula" id="vidcliente" class="input" type="text" required>
+                            <div></div>
+                        </div>
+                    </div>   
+
+                    <h3 class="text-center pb-4">Registro de la venta</h3>
+                    <div class="grid-container">
+                        <div class="input-group">
+                            <label class="label">Método de pago</label>
+                                <select class="input" id="vmetododepago" >
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                                    <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+                                    <option value="Transferencia">Transferencia</option>
+                                </select>                     
+                        </div>    
+                        
+                        <div class="form-group">
+                            <label>Instalación</label>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="installation-checkbox" />
+                                <label for="installation-checkbox">¿Requiere instalación?</label>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <!-- Dirección (oculta por defecto) -->
+                    <div class="form-group" id="direccion" style="display: none;">
+                        <label>Precio de instalación</label>
+                        <input name="Pinstalacion" id="vidpinstalacion" class="input" type="number" required>
+                        <div></div>
+                        
+                        <label>Dirección</label>
+                        <textarea id="vdireccion"class="input2" rows="3" cols="40" style="resize: none;" ></textarea>
+                    </div>
+                    <button id="confirm_venta" type="button" class="btn btn-dark">Confirmar</button> 
+                </form>
+            </div>
+
+            {% comment %} seccion de los productos {% endcomment %}
+            <div class="py-4 col">
+                <div><h4 class="msgerror text-center alert alert-danger" id="msgerrorventa"></h4></div>
+                <input id="item-name" type="search" list="searhp" class="texta mb-4 form-control" placeholder="Buscar producto...">
+                <datalist id="searhp">
+                </datalist>
+                <button id="confirm-item"type="button" class="col pt-1 btn btn-dark">Añadir al carrito <i class="pl-1 fa-solid fa-cart-plus"></i></button>
+                <section class ="section-title">Lista de Productos a Vender <i class="fa-solid fa-clipboard-check"></i> </section>
+                <div class="container">
+                    <div>
+                        <table class="display nowrap table table-striped table-hover">
+                            <caption>
+                                Lista de productos
+                                <h3>Total a pagar: C$ <span id="total-a-pagar">0</span> </h3>
+                            </caption>
+                            <thead>
+                                <tr>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Cantidad</th>
+                                <th>Opc</th>
+                                </tr>
+                            </thead>
+                            <tbody id="car_products">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+
+    <section class="hidden mt-4 ml-5" id="registrarp">
+        <div class="col">
+            <form class="p-4 cartag3">
+                <h3 class="text-center pb-4" id="tituloproducto">Nuevo Producto</h3>
+                <div class="grid-container3">
+                    <!-- Primera fila -->
+                    <div class="input-group">
+                        <label for="nombre" class="label">Nombre</label>
+                        <input name="nombre" id="nombrepro" class="input" type="text" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="preciouni" class="label">Precio unitario</label>
+                        <input name="preciouni" id="preciouni" class="input" type="number" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="proveedor" class="label">Proveedor</label>
+                        <select name="proveedor" id="selectproveedor" class="input">
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="bodega" class="label">Bodega</label>
+                        <select name="bodega" id="selectbodega" class="input">    
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="ganancia" class="label">Ganancia</label>
+                        <input name="ganancia" id="gananciapro" class="input" type="number" required>
+                    </div>
+                    <!-- Tercera fila -->
+                    <div class="input-group">
+                        <label for="marca" class="label">Marca</label>
+                        <input name="marca" id="marcapro" class="input" type="text" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="modelo" class="label">Modelo</label>
+                        <input name="modelo" id="modelopro" class="input" type="text" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cantidad" class="label">Cantidad</label>
+                        <input name="cantidad" id="cantidadpro" class="input" type="number" required>
+                    </div>
+                    <div class="input-group input-descripcion">
+                        <label for="descripcion" class="label">Descripción</label>
+                        <textarea name="descripcion" id="descripcionpro" class="input2" type="text"></textarea>
+                    </div>
+                </div>
+                <!-- Botón de confirmación -->
+                <div class="text-center mt-4">
+                    <div><h4 class="msgerror text-center alert alert-danger" id="msgerrorprod"></h4></div>
+                    <button id="confirmarproducto" type="submit" class="btn btn-dark">Confirmar</button>
+                    <div id="btneditpro" class=" hidden">
+                        <button id = "confircambiopro" type="button" class=" btn btn-dark">Confirmar</button>
+                        <button id = "cancelpro" type="button" class=" btn btn-dark">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+    
+    <section id = "Administrar" class=" <container hidden">
+        <section class="section-title">Administración
+            <button class="ml-4 btn btn-dark" id="bodegasbtn"> Bodegas </button>
+            <button class="btn btn-dark" id="proveedoresbtn"> Proveedores </button>
+        </section>
+        <div class="row">
+            <div><h4 class="ml-4 msgerror text-center alert alert-danger" id="msgerroradmin"></h4></div>
+            <div class="col">
+                <form class="m-5 p-4 cartag hidden" id="fproveedor"> 
+                    <h3 class="text-center pb-4" id="tituloproveedor">Añadir Proveedor</h3>
+                    <div class="grid-container">
+                        <div class="input-group">
+                            <label class="label">Nombre</label>
+                            <input name="nameprov" id="nameprov" class="input" type="text" required>
+                            <div></div>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Apellido</label>
+                            <input name="lastnameprov" id="lastnameprov" class="input" type="text" required>
+                            <div></div>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Identificación</label>
+                            <input name="cedulaprov" id="cedulaprov" class="input" type="text" required>
+                            <div></div>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Telefono</label>
+                            <input name="telfprov" id="telfprov" class="input" type="number" required>
+                            <div></div>
+                        </div>
+                        <button id = "confirmarproveedor" type="button" class="btn btn-dark">Confirmar</button>
+                    </div>
+                    <div id="btneditrov" class=" hidden">
+                        <button id = "eliminarprov" type="button" class=" btn btn-dark">Eliminar</button>
+                        <button id = "confircambioprov" type="button" class=" btn btn-dark">Confirmar</button>
+                        <button id = "cancelprov" type="button" class=" btn btn-dark">Cancelar</button>
+                    </div>
+                </form>
+                <form class="m-5 p-4 cartag" id="fbodega"> 
+                    <h3 class="text-center pb-4" id="titulobodega">Agregar Bodega</h3>
+                    <div class="grid-container">
+                        <div class="input-group">
+                            <label class="label">Nombre</label>
+                            <input name="namebodega" id="namebodega" class="input" type="text" required>
+                            <div></div>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Capacidad</label>
+                            <input name="capacidadbodega" id="capacidadbodega" class="input" type="number" required>
+                            <div></div>
+                        </div>
+                        <button id = "confirmarbodega" type="button" class="btn btn-dark">Confirmar</button>
+                    </div>
+                    <div id="btneditbod" class="hidden">
+                        <button id = "eliminarbod" type="button" class="btn btn-dark">Eliminar</button>
+                        <button id = "confircambiobod" type="button" class="btn btn-dark">Confirmar</button>
+                        <button id = "cancelbod" type="button" class="btn btn-dark">Cancelar</button>
+                    </div>
+                </form>
+            </div> <!-- Este es un comentario simple -->
+
+            <div class="col">
+                <div class="mt-5 p-5 cartag2" id="colbdlist">
+                    <div>
+                        <h4 class="text-center pb-2" id="tituloadmin">Listado de Bodegas</h4>
+                    </div>
+                    <div>
+                        <table class="display nowrap table table-striped table-hover">
+                            <thead id="headbod">
+                                <tr>
+                                <th>Nombre</th>
+                                <th>Capacidad</th>
+                                <th>Opc</th>
+                                </tr>
+                            </thead>
+                            <thead class="hidden" id="headprov">
+                                <tr>
+                                <th>Nombre</th>
+                                <th>Cedula</th>
+                                <th>Opc</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listadopb">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+{% endblock body%} 
+
+{% block script %}
+    <script src="{% static 'fs/main.js' %}"></script>
+    {% comment %} js bootstrap {% endcomment %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    {% comment %} Datatable {% endcomment %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/b-print-3.2.0/r-3.0.3/datatables.min.js"></script>   
+{% endblock %}
