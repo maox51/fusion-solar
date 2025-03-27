@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>{% block title %}Fusión Solar{% endblock %}</title>
+        {% comment %} Bootstrap {% endcomment %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
+        {% comment %} Iconos {% endcomment %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QwnXwA0U2Qs7aXaPlBn4mQIpilSU9hvITjZoLwHhVi01weVS9CfuF5A5H1AnkOZU" crossorigin="anonymous">
+
+        {% comment %} fuentes {% endcomment %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
+        {% comment %} Data tables {% endcomment %}
+        <link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/b-print-3.2.0/r-3.0.3/datatables.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="{% static 'fs/styles.css' %}">
+        
+        {% block script %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class=" contenedor">
+            <aside class="barra">
+                <h1 class="pb-3 logo border-bottom border-light border-5">Fusión Solar <i class="fa-solid fa-solar-panel"></i></h1>
+                
+                <nav class="menu">
+                    <a href="#" id="recientes-link" class="menu-link active">Inicio</a>
+                    {% comment %} Registrar {% endcomment %}
+                    <a href="#" id="Clientes-link" class="menu-link">Clientes</a>
+                    <a href="#" id="administrar-link" class="menu-link">Proveedores</a>
+                    <div class="dropend menu" >
+                        <a href="#" id="inventario-link" class="menu-link">Productos</a>
+                        <a class="dropdown-item" href="#" id="registrarventa">Compras</a>
+                         <a href="#" id="venta-link" class="menu-link">Reporte de ventas</a>
+
+                        <a type="button" id="registrar-link" class="dropdown-toggle menu-link" data-bs-toggle="dropdown" aria-expanded="false" >
+                            Registrar
+                        </a>
+
+                        
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" id="registrarproducto">Productos</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <a href="{% url 'logout' %}" class="text-decoration-none logout" >Logout</a>
+            </aside>
+
+            <main class="main-content">
+                {% block body %}
+                {% endblock %}
+            </main>
+        </div>
+
+    </body>
+</html>
